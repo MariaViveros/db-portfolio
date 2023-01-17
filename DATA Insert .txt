@@ -1,0 +1,184 @@
+--EMPLOYEES
+
+
+INSERT INTO Employee (EID, Fname, Lname, Phone_Number)
+Values (01, 'James', 'Lone', 6511234567);
+
+INSERT INTO Employee (EID, Fname, Lname, Phone_Number)
+Values (02, 'Jackie', 'Hi', 6512345678);
+
+INSERT INTO Employee (EID, Fname, Lname, Phone_Number)
+Values (03, 'Johnny', 'Appleseed', 6513456789);
+
+INSERT INTO Employee (EID, Fname, Lname, Phone_Number)
+Values (04, 'Jane', 'Doe', 7635551234);
+
+
+
+--CUSTOMERS
+
+
+INSERT INTO Customers (CID, Cname, Table_Number)
+Values (001, 'Luka Doncic', 10 );
+
+INSERT INTO Customers (CID, Cname, Table_Number)
+Values (002, 'Tyrese Maxey', 11 );
+
+INSERT INTO Customers (CID, Cname, Table_Number)
+Values (003, 'Anthony Edwards', 12 );
+
+INSERT INTO Customers (CID, Cname, Table_Number)
+Values (004, 'Lamelo Ball', 13 );
+
+
+
+--ORDERS
+
+
+INSERT INTO Orders (Orders_ID,CID, EID, Ready, Total_price)
+Values (1,001, 01, 'RDY', 10.99 );
+
+INSERT INTO Orders (Orders_ID,CID, EID, Ready, Total_price)
+Values (2,002, 02, 'NR', 20.33);
+
+INSERT INTO Orders (Orders_ID,CID, EID, Ready, Total_price )
+Values (3,003, 03, 'RDY', 122.00 );
+
+INSERT INTO Orders (Orders_ID,CID, EID, Ready, Total_price )
+Values (4,004, 04, 'RDY', 25.00 );
+
+
+--MENU
+
+
+INSERT INTO Menu (MID, Orders_ID, Dish_Item)
+Values (0101, 001, 'Lunch Menu' );
+
+INSERT INTO Menu (MID, Orders_ID, Dish_Item)
+Values (0102, 002, 'Breakfest Menu' );
+
+INSERT INTO Menu (MID, Orders_ID, Dish_Item)
+Values (0103, 003, 'Breakfest Menu' );
+
+INSERT INTO Menu (MID, Orders_ID, Dish_Item)
+Values (0104, 004, 'Dinner Menu' );
+
+
+--DISH
+
+
+INSERT INTO Dish (DID, MID, DISH_DESCRIPTION, Price, Quanitity)
+Values (201, 0101, 'Shake: Banana, Burger: Cheese Burger', 5.00 , 3 );
+
+INSERT INTO Dish (DID, MID, DISH_DESCRIPTION, Price, Quanitity)
+Values (202, 0102, 'Drink: Orange Juice Food: Hashbrown and Fried Eggs Desert: Apple Pie', 10.25, 5 );
+
+INSERT INTO Dish (DID, MID, DISH_DESCRIPTION, Price, Quanitity)
+Values (203, 0103, 'Drink: Sweet Tea Food: Shrimp Fried Rice', 20.33, 10 );
+
+INSERT INTO Dish (DID, MID, DISH_DESCRIPTION, Price, Quanitity)
+Values (204, 0104, 'Drink: Diet Coke Food: Pineapple Pizza', 6.25, 8 );
+
+
+--SUPPLIER
+
+
+INSERT INTO Supplier (Supplier_ID, Supplier_Name, Supplier_Type, Phone_Number)
+Values (321, 'Fresh Fruits and Veggies', 'Vegetables and Fruits', 1234568888 );
+
+INSERT INTO Supplier (Supplier_ID, Supplier_Name, Supplier_Type, Phone_Number)
+Values (322, 'Whole Sale Foods', 'Bread, Rice, Seafood, Meat', 1234567777 );
+
+INSERT INTO Supplier (Supplier_ID, Supplier_Name, Supplier_Type, Phone_Number)
+Values (323, 'Deserts On US', 'Deserts', 1234569999 );
+
+INSERT INTO Supplier (Supplier_ID, Supplier_Name, Supplier_Type, Phone_Number)
+Values (324, 'All Kind of Drinks', 'Beverages', 1234563333 );
+
+
+--INGREDIENTS
+
+
+INSERT INTO Ingredients (IID, DID, Ingredient_Name, Price)
+Values (555, 201, 'Buns, Beef Patty, Milkshake', 2.25 );
+
+INSERT INTO Ingredients (IID, DID, Ingredient_Name, Price)
+Values (556, 202, 'Potatoe, Eggs, Oil, Apple, OJ', 3.25 );
+
+
+INSERT INTO Ingredients (IID, DID, Ingredient_Name, Price)
+Values (557, 203, 'Tea, Sugar, Shrimp, rice', 10.25 );
+
+
+INSERT INTO Ingredients (IID, DID, Ingredient_Name, Price)
+Values (558, 204, 'Carbonate Drink, Pineapple, Tomato Sauce, Bread', 4.25 );
+
+
+--INNER JOIN 
+
+
+SELECT Orders.Orders_ID, Customers.CName
+	FROM Orders
+INNER JOIN Customers ON Orders.Orders_ID = Customers.CID;
+
+
+SELECT Orders.Orders_ID  FROM Orders 
+   INNER JOIN Customers
+     ON Customers.CID = Orders.Orders_ID
+ WHERE Customers.CName = 'Lamelo Ball'; 
+
+
+--LEFT JOIN
+
+
+SELECT Customers.CName, Orders.Orders_ID
+	FROM Customers
+	 LEFT JOIN Orders ON Customers.CID = Orders.Orders_ID
+WHERE Customers.CName = 'Anthony Edwards'; 
+
+
+SELECT Customers.Table_Number, Orders.Orders_ID
+	FROM Customers
+	 LEFT JOIN Orders ON Customers.CID = Orders.Orders_ID
+WHERE Customers.Table_Number = 11; 
+ 
+ 
+--GROUP
+ 
+ 
+SELECT Dish_item
+	FROM MENU
+GROUP BY Dish_item;
+ 
+ 
+SELECT Ingredient_Name
+	FROM INGREDIENTS
+GROUP BY Ingredient_Name;
+
+
+--GROUPING FUNCTION WITH HAVING CLAUSE
+
+
+SELECT DID, AVG(Price)
+	FROM DISH
+	 GROUP BY DID
+HAVING AVG(Price) > 4.00;
+
+
+SELECT Orders_ID, SUM(Total_Price)
+	FROM ORDERS
+	 GROUP BY Orders_ID
+HAVING SUM(Total_Price) < 20.33;
+
+
+--QUERY WITH JOIN, WHERE, GROUPING FUNCTION, HAVING CLAUSE  
+
+
+SELECT Orders_ID, EID, Ready, AVG(Total_Price)
+FROM Orders
+INNER JOIN  Customers
+On Orders.CID =Customers.CID 
+WHERE Orders.Ready = 'RDY'
+GROUP BY Orders_ID, EID, Ready
+HAVING AVG(Total_Price) < 200
+;

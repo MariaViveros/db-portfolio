@@ -1,0 +1,63 @@
+CREATE TABLE Employee (
+    EID int NOT NULL,
+    Fname varchar2(50),
+    Lname varchar2(50),
+    Phone_Number int,
+    salary float,
+    PRIMARY KEY (EID)
+);
+
+CREATE TABLE Customers (
+    CID int NOT NULL,
+    Cname varchar2(50),
+    Table_Number int,
+    PRIMARY KEY (CID)
+);
+
+CREATE TABLE Orders (
+    Orders_ID int NOT NULL, 
+    CID int,
+    EID int,
+    Status varchar2(3),
+    Total_Price int,
+    PRIMARY KEY (Orders_ID), 
+    FOREIGN KEY (CID) REFERENCES Customers(CID),
+    FOREIGN KEY (EID) REFERENCES Employee(EID)
+);
+
+CREATE TABLE Menu (
+    MID int NOT NULL,
+    Orders_ID int,
+    Dish_Item varchar2(50),
+    PRIMARY KEY (MID),
+    FOREIGN KEY (Orders_ID) REFERENCES Orders(Orders_ID)
+);
+
+CREATE TABLE Dish (
+    DID int NOT NULL,
+    MID int,
+    Dish_Description varchar2(200),
+    Price int,
+    Availability varchar2(3),
+    Quanitity int,
+    PRIMARY KEY (DID),
+    FOREIGN KEY (MID) REFERENCES Menu(MID)
+);
+
+CREATE TABLE Supplier (
+    Supplier_ID int NOT NULL,
+    Supplier_Name varchar2(50),
+    Supplier_Type varchar2(50),
+    Status varchar2(3),
+    Phone_Number int,
+    PRIMARY KEY (Supplier_ID)
+);
+
+CREATE TABLE Ingredients (
+    IID int NOT NULL,
+    DID int,
+    Ingredient_Name varchar2(50),
+    Price int,
+    PRIMARY KEY (IID),
+    FOREIGN KEY (DID) REFERENCES Dish(DID)
+);
